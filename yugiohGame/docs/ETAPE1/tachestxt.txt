@@ -1,0 +1,15 @@
+repartitions des taches ETAPE 1
+
+	Cyril
+		deckBuilder
+			recuperation des cartes depuis la bd
+			afficher la liste
+			faire des selects...
+			
+
+
+	Lyna
+		base de données 
+			connexion
+			recuperation des cartes 
+			mettre dans la base 
