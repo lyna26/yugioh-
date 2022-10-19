@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainMenuController">
+   <children>
+      <FlowPane layoutX="14.0" layoutY="7.0" orientation="VERTICAL" prefHeight="204.0" prefWidth="173.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#goToDuel" text="DUEL" />
+            <Button mnemonicParsing="false" onAction="#goToDeckBuilder" text="DECK BUILDER" />
+            <Button mnemonicParsing="false" text="EXIT" />
+         </children>
+      </FlowPane>
+   </children>
+</AnchorPane>
