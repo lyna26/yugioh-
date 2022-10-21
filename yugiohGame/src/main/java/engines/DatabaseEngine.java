@@ -1,4 +1,4 @@
-package database;
+package engines;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,10 +11,9 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import api.API;
 
 
-public class databaseConnector {
+public class DatabaseEngine {
 	
 	private static Map<Integer, String> namePositionMap = new HashMap<Integer, String>();
 
@@ -42,12 +41,12 @@ public class databaseConnector {
 	
 	public static void applyFilterToSelect(String query)
 	{
-		//TODO finish the function 
+	
 	}
 	
 	public static void isFilteredData()
 	{
-		//TODO finish the function
+	
 	}
 	
 
@@ -106,6 +105,7 @@ public class databaseConnector {
 	public static void insertCard(Connection connexion,JsonNode card ) throws SQLException
 	{
 		//TODO find a way to find the type of the field and user the position fieldname mapper to automate and never modify
+		
 		String reqParam = "insert into card VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement pstm = connexion.prepareStatement(reqParam);
@@ -134,44 +134,5 @@ public class databaseConnector {
 		//pstm.setBoolean(14, isStaple);
 		
 		int count = pstm.executeUpdate();	
-	}
-	
-	/**
-	 * This function will export API data to database
-	 * @param connexion the connexion to database
-	 * @param cards data formatted as json 
-	 */
-	public static void exportApiData(Connection connexion, JsonNode cards) throws SQLException
-	{
-		int size = cards.get("data").size();
-		
-		for (int i = 0; i < size; i++)
-		{
-			System.out.println((i + 1) +"/" + size + cards.get("data").get(i).get("name").toString());
-			
-			databaseConnector.insertCard(connexion, cards.get("data").get(i));
-		}
-	}
-
-	/**
-	 * This main is independent from the application , it is used to export data from API to database when it is needed 
-	*/
-	public static void main() {
-
-		//databaseConnector.initiateMap();
-		
-		JsonNode cards = API.getCardData();
-		
-		Connection connexion = databaseConnector.connect();
-		
-		try 
-		{
-			databaseConnector.exportApiData(connexion, cards);
-		} 
-		catch (SQLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

@@ -1,4 +1,4 @@
-package api;
+package engines;
 
 import java.io.File;
 import java.net.HttpURLConnection;
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
-public class API {
+public class ApiEngine {
 	
 	/**
 	 * This function will collect all cards data from 'db.ygoprodeck.com/api/v7/cardinfo.php?'

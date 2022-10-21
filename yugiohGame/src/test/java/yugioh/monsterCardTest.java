@@ -1,71 +1,37 @@
 package yugioh;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
-import card.card;
-import card.monsterCard;
-import database.databaseConnector;
-import duel.MODE;
-import player.player;
+import card.Card;
+import card.Position;
+import card.MonsterCard;
+import player.Player;
 
 
  public class monsterCardTest {
-
-	List<monsterCard> monsters = new ArrayList<monsterCard>();
-	
-	@Test
-	public void generateMonstes() {
-		
-		try {
-			
-			Connection connex = databaseConnector.connect();
-			
-			ResultSet res = databaseConnector.selectCards(connex, "Blue-eyes");
-			
-			while(res.next()){
-		        System.out.println(",name: " + res.getString("name"));
-		        
-		        monsterCard c= new monsterCard(res);
-		        
-		        monsters.add(c);
-		     }
-			
-			assert(monsters.size() > 0);
-		
-		} 
-		catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-	}
-	
-	
-	
+	 
 	@Test
 	public void attacktest()
 	{
-		generateMonstes();
+
+		List<Card> monsters = TestTools.generateMonstes();
 		
+		List<Player> players = TestTools.generatePlayer(2);
 		
-		player owner = new player(8000);
-		
-		player opponent = new player(8000);
 	
-		monsterCard cardOwner = monsters.get(0);
-		monsterCard cardOpponent = monsters.get(1);
+		MonsterCard cardOwner = (MonsterCard) monsters.get(0);
 		
-		cardOwner.setOwner(owner);
-		cardOpponent.setOwner(owner);
+		MonsterCard cardOpponent = (MonsterCard) monsters.get(1);
+		
+		cardOwner.setOwner(players.get(0));
+		cardOpponent.setOwner(players.get(1));
 	
 		
-		cardOwner.setMode(MODE.ATK);
-		cardOpponent.setMode(MODE.ATK);
+		cardOwner.setMode(Position.ATK);
+		cardOpponent.setMode(Position.ATK);
 		
 		cardOwner.attack(cardOpponent);
 		
@@ -79,17 +45,17 @@ import player.player;
 		System.out.println("damage :" + damage);
 		
 
-		System.out.println("LP owner :" + owner.getLp());
+		System.out.println("LP owner :" + players.get(0).getLp());
 		
-		System.out.println("LP opponent :" + opponent.getLp());
+		System.out.println("LP opponent :" + players.get(1).getLp());
 		
 		if (cardOpponent.getAtk() > cardOwner.getAtk())
 		{
-			assert(owner.getLp() == (8000 - damage));
+			assert( players.get(0).getLp() == (8000 - damage));
 		}
 		else
 		{
-			assert(opponent.getLp() == (8000- damage));
+			assert( players.get(0).getLp() == (8000- damage));
 		}
 	}
 }

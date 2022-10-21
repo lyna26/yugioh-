@@ -10,13 +10,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 
 public class DuelController implements Initializable {
 	
 	@FXML
 	BorderPane duelBorderPane;
+	
+	@FXML 
+	FlowPane duelFlowPane ;
 
 	Node leftPane;
+	
 	
 	/**
 	 * This function will initialize the duelBorderPane
@@ -32,7 +37,8 @@ public class DuelController implements Initializable {
 			
 			leftPane = loader.load();
 			
-			duelBorderPane.setLeft(leftPane);	
+			duelFlowPane.getChildren().add(leftPane);
+			duelFlowPane.getChildren().add(duelBorderPane);
 			
 		} 
 		catch (IOException e) 
