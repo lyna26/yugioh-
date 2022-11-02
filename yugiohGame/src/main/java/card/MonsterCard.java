@@ -5,9 +5,11 @@ import java.sql.SQLException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import enums.Position;
 import player.Player;
 
-public class MonsterCard extends Card{
+
+public abstract class MonsterCard extends Card {
 	
 	private int atk;
 	private int def;
@@ -17,10 +19,12 @@ public class MonsterCard extends Card{
 	
 	/**
 	 * This constructor is used to generate a monster card from data formated as Json
-	 * @param card it type is JsonNode
+	 * @param card its type is JsonNode
+	 * @param owner player 
 	 */
-	public MonsterCard(JsonNode card) {
-		super(card);
+	public MonsterCard(JsonNode card, Player owner) {
+		super(card, owner);
+		
 		this.atk =  card.path("atk").asInt();
 		this.def = card.path("def").asInt();
 		this.level = card.path("level").asInt();
@@ -31,14 +35,17 @@ public class MonsterCard extends Card{
 	 * This constructor is used to generate a monster card from data exported from database 
 	 * @param cardInfos its type is ResultSet
 	 */
-	public MonsterCard(ResultSet cardInfos) {
-		super(cardInfos);
+	public MonsterCard(ResultSet cardInfos, Player owner) {
+		super(cardInfos, owner);
+		
 		try {
 			this.atk = cardInfos.getInt("atk");
 			this.def = cardInfos.getInt("def");
 			this.level = cardInfos.getInt("level");
 			this.attribute = cardInfos.getString("attribute");	
-		} catch (SQLException e) {
+		}
+		catch (SQLException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -75,7 +82,6 @@ public class MonsterCard extends Card{
 	public void setAttribute(String attribute) {
 		this.attribute = attribute;
 	}
-	
 	
 	
 	/*public void attackDirectly()

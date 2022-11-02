@@ -6,9 +6,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import card.Deck;
 import card.Card;
+import card.ICard;
 import card.MonsterCard;
+import deck.Deck;
 import engines.DatabaseEngine;
 import player.Player;
 
@@ -30,13 +31,14 @@ public class TestTools {
 			while(res.next()){
 		        System.out.println("name: " + res.getString("name"));
 		        
-		        monsters.add(new MonsterCard(res));
+		        monsters.add(new Card(res, null));
 		     }
 			
 			return monsters;
 		
 		} 
-		catch (SQLException e) {
+		catch (SQLException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;

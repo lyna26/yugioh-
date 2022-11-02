@@ -2,25 +2,38 @@ package engines;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.naming.InvalidNameException;
+
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
 import card.Card;
+import card.ICard;
 
 public class ExporterCardDataEngine {
+	
+	//private String[] conjunctives= {"then", "and", "and if you do", "also", "also, after"};
 	
 	
 	public static void analyseResolution(String resolution)
 	{
-	
 		System.out.println("RESOLUTION ::" + resolution + "/n");
 	}
 	
 	public static void analyseActivation(String activation)
 	{
-		System.out.println("ACTIVATION ::" + activation + "/n");
+		String activ = activation ;
+		
+		if (activation.contains(":"))
+		{
+			analyseCondition(activation.split(":")[0]);
+			
+			activ = activation.split(":")[1];
+		}
+		System.out.println("ACTIVATION ::" + activ + "/n");
 	}
 	
 	public static void analyseCondition(String condition)
@@ -30,70 +43,24 @@ public class ExporterCardDataEngine {
 	
 	public static void analyseSentence(String sentence) throws InvalidNameException
 	{
-		String[] sentences ;
 		
-		sentences = sentence.split(";");
-		
-		try
+		if (sentence.contains(";"))
 		{
-			try
-			{
-				analyseCondition(sentences[0].split(":")[0].toString());
-				
-				analyseActivation(sentences[0].split(":")[1].toString());
-			}
+			analyseResolution(sentence.split(";")[1]);
 			
-			catch (ArrayIndexOutOfBoundsException e) 
-			{
-				System.out.println("no ; on the sensence !!");
-			}
+			analyseActivation(sentence.split(";")[0]);
 		}
-		
-		catch (ArrayIndexOutOfBoundsException e) 
+		else if (sentence.contains(":"))
 		{
-			System.out.println("no ; on the sensence !!");
+			analyseActivation(sentence);
 		}
-		
+		else
+		{
+			System.out.println("No chain monster : " + sentence);
+		}	
 	}
 	
-	public static void addTagsTo(Card card) throws InvalidNameException
-	{		
-		String[] sentences ;
-		
-		System.out.println(card.getDesc());
-		
-		try
-		{
-			
-			//sentences = card.getDesc().split(".");
-			sentences = card.getDesc().split("\\.");
-			
-			System.out.println(sentences.length);
-			
-		
-			if (sentences.length == 0)
-			{
-				System.out.println("One sentence texte /n");
-				
-				analyseSentence(card.getDesc());
-			}
-			else
-			{
-				System.out.println("many sentences !!");
-				
-				for(String sentence : sentences)
-				{
-					System.out.println("ANALYSE" + sentence + "/n");
-					analyseSentence(sentence);
-					
-				}
-			}
-		}
-		catch (ArrayIndexOutOfBoundsException e) 
-		{
-			 throw new InvalidNameException("error");
-		}
-	}
+	
 	
 	/**
 	 * This function will export API data to database
@@ -106,14 +73,41 @@ public class ExporterCardDataEngine {
 		
 		Connection connexion = DatabaseEngine.connect();
 		
-		int size = cards.get("data").size();
+		int size = cards.size();
+		
+		System.out.println(size);
 		
 		for (int i = 0; i < size; i++)
 		{
-			System.out.println((i + 1) +"/" + size + cards.get(i).get("name").toString());
+			System.out.println((i + 1) +"/" + size + cards.get(i).get("desc").asText());
 			
 			DatabaseEngine.insertCard(connexion, cards.get(i));
 		}
 	}
-
+	
+	public static void addTagsTo(Card c) throws InvalidNameException
+	{		
+		System.out.println(c.getDesc());
+		
+		String[] sentences = c.getDesc().split("\\.");
+		
+		for(String sentence : sentences)
+		{
+			System.out.println("ANALYSE" + sentence + "/n");
+			
+			analyseSentence(sentence);
+			
+		}
+	}
+	
+	public static void main(String args[])
+	{
+		try {
+			exportApiData();
+		} 
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

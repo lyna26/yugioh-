@@ -6,8 +6,8 @@ import java.util.List;
 import org.junit.Test;
 
 import card.Card;
-import card.Position;
 import card.MonsterCard;
+import enums.Position;
 import player.Player;
 
 

@@ -3,7 +3,11 @@
   <groupId>personalProjects</groupId>
   <artifactId>yugiohGame</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>yugioh!</name>
+	<properties>
+		<maven.compiler.source>19</maven.compiler.source>
+		<maven.compiler.target>19</maven.compiler.target>
+	</properties>
+    <name>yugioh!</name>
   <dependencies>	
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
@@ -16,5 +20,30 @@
             <artifactId>jackson-dataformat-csv</artifactId>
             <version>2.13.0</version>
         </dependency>
+        
+        <dependency>
+	        <groupId>javax.json</groupId>
+	        <artifactId>javax.json-api</artifactId>
+	        <version>1.0</version>
+    	</dependency>
+	    <dependency>
+	        <groupId>org.glassfish</groupId>
+	        <artifactId>javax.json</artifactId>
+	        <version>1.0.4</version>
+	    </dependency>
+	    
+	    <dependency>
+		<groupId>com.googlecode.json-simple</groupId>
+		<artifactId>json-simple</artifactId>
+		<version>1.1.1</version>
+	</dependency>
+	
+	<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20200518</version>
+</dependency>
+
 	</dependencies>
+	
 </project>

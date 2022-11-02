@@ -5,8 +5,8 @@ import java.util.List;
 import org.junit.Test;
 
 import card.Card;
-import card.Deck;
 import card.MonsterCard;
+import deck.Deck;
 
 public class DeckTest {
 	

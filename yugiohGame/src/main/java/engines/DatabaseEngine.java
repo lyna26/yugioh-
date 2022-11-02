@@ -14,8 +14,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 
 public class DatabaseEngine {
-	
-	private static Map<Integer, String> namePositionMap = new HashMap<Integer, String>();
+public static Map<Integer, String> namePositionMap = new HashMap<Integer, String>();
 
 	
 	/**
@@ -58,7 +57,11 @@ public class DatabaseEngine {
 	 */
 	public static ResultSet selectCards(Connection connexion, String name) throws SQLException
 	{
+		System.out.println(name);
+		
 		String reqParam = "SELECT * FROM card WHERE name LIKE "+"'%"+name+"%'";
+		
+		System.out.println(reqParam);
 		
 		Statement stmt = connexion.createStatement();
 		
@@ -80,7 +83,8 @@ public class DatabaseEngine {
             		+ "integratedSecurity=false;"
                     + "user=lola;"
                     + "password=test123;"
-                    + "encrypt=false";
+                    + "encrypt=false;"
+					+ "CharacterSet=UTF-8";
 	                       		
 		try 
 		{
@@ -96,10 +100,25 @@ public class DatabaseEngine {
 		}
 	}
 	
+	
+	public static void insertCards(Connection connexion) throws SQLException
+	{
+		String req = "SELECT * FROM OPENROWSET (BULK 'D:\\yug.json', SINGLE_CLOB) as import";
+		
+		
+		Statement stmt = connexion.createStatement();
+		
+		ResultSet res = stmt.executeQuery(req);
+		//PreparedStatement pstm = connexion.prepareStatement(req);
+		
+		
+		//int res = pstm.executeUpdate();
+		
+	}
 	/**
 	 * This function will do an insert query
-	 * @param connexion the connexion to database
-	 * @param card data formatted as json 
+	 * @param connexion the connection to database
+	 * @param card data formatted as Json 
 	 * @exception SQLException
 	 */
 	public static void insertCard(Connection connexion,JsonNode card ) throws SQLException

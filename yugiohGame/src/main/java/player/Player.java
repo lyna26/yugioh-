@@ -1,8 +1,7 @@
 package player;
-import java.sql.SQLException;
 import java.util.List;
 
-import card.Deck;
+import deck.Deck;
 
 public class Player {
 	
@@ -12,7 +11,7 @@ public class Player {
 	String name;
 	
 	/**
-	 * This constructor will enerate a simple player with known LP
+	 * This constructor will generate a simple player with known LP
 	 */
 	public Player(int lp)
 	{

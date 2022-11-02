@@ -20,6 +20,9 @@ public class DeckBuilderController implements Initializable{
 
 	Node leftPane;
 	
+	Node rightPane;
+	
+	
 	/**
 	 * This function will initialize the cardBuilderPane
 	 */
@@ -30,9 +33,14 @@ public class DeckBuilderController implements Initializable{
 		FXMLLoader loader;
 		
 		try {
+			
 			loader = new FXMLLoader(new File("src/main/java/interfaces/cardInfosInterface.fxml").toURI().toURL());
 			
-			leftPane = loader.load();
+			leftPane = loader.load();	
+			
+			loader = new FXMLLoader(new File("src/main/java/interfaces/SearchCardInterface.fxml").toURI().toURL());
+			
+			rightPane = loader.load();	
 		} 
 		catch (IOException e) 
 		{
@@ -40,5 +48,6 @@ public class DeckBuilderController implements Initializable{
 		}
 
 		cardBuilderPane.setLeft(leftPane);		
+		cardBuilderPane.setRight(rightPane);
 	}
 }
