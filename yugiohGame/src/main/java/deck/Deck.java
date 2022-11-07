@@ -5,17 +5,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import card.ICard;
+import card.Card;
 
 public abstract class Deck {
 	
 	private String name;
 	
-	private List<ICard> deck ;	
+	private List<Card> deck ;	
 	
-	protected int  minCard;
+	private  int  minCard;
 	
-	protected int maxCard;
+	private int maxCard;
 	
 	public Deck(int minCard, int maxCard)
 	{
@@ -23,10 +23,10 @@ public abstract class Deck {
 		
 		this.maxCard = maxCard;
 		
-		deck = new ArrayList<ICard>();
+		deck = new ArrayList<Card>(maxCard);
 	}
 	
-	public Deck (List<ICard> deck, int minCard, int maxCard)
+	public Deck (List<Card> deck, int minCard, int maxCard)
 	{
 		this.deck = deck;
 		this.minCard = minCard;
@@ -37,7 +37,7 @@ public abstract class Deck {
 	{
 		//size of the deck 
 		int size = deck.size() ;
-		
+	
 		//count each card occurrences
 		 Map<String,Long> occurrenceMap = deck.stream().collect(Collectors.groupingBy(card -> card.getName(),Collectors.counting()));
 
@@ -56,19 +56,40 @@ public abstract class Deck {
 		}
 	}
 
-	public List<ICard> getDeck() {
+	public void addCard(Card card)
+	{
+		deck.add(card);
+	}
+	
+	public void removeCard(Card card)
+	{
+		deck.remove(card);
+	}
+	
+	public void clearDeck()
+	{
+		deck.clear();	
+	}
+
+	
+	public List<Card> getDeck() {
 		return deck;
 	}
 
-	public void setDeck(List<ICard> deck) {
-		this.deck = deck;
-	}
-
+	
 	public int getMinCard() {
 		return minCard;
 	}
 
 	public int getMaxCard() {
 		return maxCard;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

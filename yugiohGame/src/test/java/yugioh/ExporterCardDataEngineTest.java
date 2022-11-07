@@ -1,5 +1,6 @@
 package yugioh;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,7 +28,12 @@ public class ExporterCardDataEngineTest {
 		try {
 			for(Card c : kuribandit)
 			{
-				ExporterCardDataEngine.addTagsTo(c);
+				try {
+					ExporterCardDataEngine.addTagsTo(c);
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		} catch (InvalidNameException e) {
 			// TODO Auto-generated catch block

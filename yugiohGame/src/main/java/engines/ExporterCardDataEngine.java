@@ -1,17 +1,17 @@
 package engines;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.naming.InvalidNameException;
-
-import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
 import card.Card;
-import card.ICard;
 
 public class ExporterCardDataEngine {
 	
@@ -22,6 +22,7 @@ public class ExporterCardDataEngine {
 	{
 		System.out.println("RESOLUTION ::" + resolution + "/n");
 	}
+	
 	
 	public static void analyseActivation(String activation)
 	{
@@ -36,14 +37,27 @@ public class ExporterCardDataEngine {
 		System.out.println("ACTIVATION ::" + activ + "/n");
 	}
 	
+	
 	public static void analyseCondition(String condition)
 	{
 		System.out.println("CONDITION ::" + condition + "/n");
 	}
 	
-	public static void analyseSentence(String sentence) throws InvalidNameException
+	
+	public static void analyseSimpleText(String text) throws UnsupportedEncodingException
 	{
-		
+        
+		if (text.contains("\u25cf") == true)
+		{
+			System.out.println("textContainsDot");
+		}
+		else
+		{
+			System.out.println("No ';' or ':' in the sentence :  " + text);
+		}
+	}
+	public static void analyseSentence(String sentence) throws InvalidNameException
+	{	
 		if (sentence.contains(";"))
 		{
 			analyseResolution(sentence.split(";")[1]);
@@ -56,17 +70,21 @@ public class ExporterCardDataEngine {
 		}
 		else
 		{
-			System.out.println("No chain monster : " + sentence);
+			try {
+				analyseSimpleText(sentence);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}	
 	}
-	
-	
 	
 	/**
 	 * This function will export API data to database
 	 * @throws SQLException 
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static void exportApiData() throws SQLException
+	public static void exportApiData() throws SQLException, UnsupportedEncodingException
 	{
 		
 		JsonNode cards = ApiEngine.getCardData().get("data");
@@ -75,19 +93,15 @@ public class ExporterCardDataEngine {
 		
 		int size = cards.size();
 		
-		System.out.println(size);
-		
+	
 		for (int i = 0; i < size; i++)
-		{
-			System.out.println((i + 1) +"/" + size + cards.get(i).get("desc").asText());
-			
+		{	
 			DatabaseEngine.insertCard(connexion, cards.get(i));
 		}
 	}
 	
-	public static void addTagsTo(Card c) throws InvalidNameException
+	public static void addTagsTo(Card c) throws InvalidNameException, UnsupportedEncodingException
 	{		
-		System.out.println(c.getDesc());
 		
 		String[] sentences = c.getDesc().split("\\.");
 		
@@ -95,17 +109,18 @@ public class ExporterCardDataEngine {
 		{
 			System.out.println("ANALYSE" + sentence + "/n");
 			
-			analyseSentence(sentence);
-			
+			analyseSentence(sentence);		
 		}
 	}
 	
-	public static void main(String args[])
+	public static void main(String args[]) throws UnsupportedEncodingException
 	{
-		try {
+		try 
+		{
 			exportApiData();
 		} 
-		catch (SQLException e) {
+		catch (SQLException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

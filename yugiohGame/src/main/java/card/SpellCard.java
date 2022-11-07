@@ -8,8 +8,8 @@ import player.Player;
 
 public abstract class SpellCard extends Card{
 
-	public SpellCard(int id, String name, String type, String desc, String race, String image, Player owner) {
-		super(id, name, type, desc, race, image, owner);
+	public SpellCard(int id, String name, String type, String desc, String race, String image, String imageSmall, Player owner) {
+		super(id, name, type, desc, race, image, image, owner);
 	}
 
 	public SpellCard(JsonNode card, Player owner) {

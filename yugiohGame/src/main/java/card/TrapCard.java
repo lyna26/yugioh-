@@ -21,8 +21,8 @@ public class TrapCard extends Card{
 	 * @param image
 	 * @param owner
 	 */
-	public TrapCard(int id, String name, String type, String desc, String race, String image, Player owner) {
-		super(id, name, type, desc, race, image, owner);
+	public TrapCard(int id, String name, String type, String desc, String race, String image, String imageSmall, Player owner) {
+		super(id, name, type, desc, race, image, imageSmall, owner);
 		// TODO Auto-generated constructor stub
 	}
 

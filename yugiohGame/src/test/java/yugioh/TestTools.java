@@ -8,6 +8,7 @@ import java.util.List;
 
 import card.Card;
 import card.ICard;
+import card.MainMonster;
 import card.MonsterCard;
 import deck.Deck;
 import engines.DatabaseEngine;
@@ -31,7 +32,7 @@ public class TestTools {
 			while(res.next()){
 		        System.out.println("name: " + res.getString("name"));
 		        
-		        monsters.add(new Card(res, null));
+		        monsters.add(new MainMonster(res, null));
 		     }
 			
 			return monsters;

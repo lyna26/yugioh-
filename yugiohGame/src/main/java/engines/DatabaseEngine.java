@@ -1,5 +1,7 @@
 package engines;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,7 +16,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 
 public class DatabaseEngine {
-public static Map<Integer, String> namePositionMap = new HashMap<Integer, String>();
+	
+	public static Map<Integer, String> namePositionMap = new HashMap<Integer, String>();
 
 	
 	/**
@@ -57,11 +60,7 @@ public static Map<Integer, String> namePositionMap = new HashMap<Integer, String
 	 */
 	public static ResultSet selectCards(Connection connexion, String name) throws SQLException
 	{
-		System.out.println(name);
-		
 		String reqParam = "SELECT * FROM card WHERE name LIKE "+"'%"+name+"%'";
-		
-		System.out.println(reqParam);
 		
 		Statement stmt = connexion.createStatement();
 		
@@ -84,7 +83,9 @@ public static Map<Integer, String> namePositionMap = new HashMap<Integer, String
                     + "user=lola;"
                     + "password=test123;"
                     + "encrypt=false;"
+                    + "sendStringParametersAsUnicode=true;"
 					+ "CharacterSet=UTF-8";
+		
 	                       		
 		try 
 		{
@@ -120,38 +121,52 @@ public static Map<Integer, String> namePositionMap = new HashMap<Integer, String
 	 * @param connexion the connection to database
 	 * @param card data formatted as Json 
 	 * @exception SQLException
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static void insertCard(Connection connexion,JsonNode card ) throws SQLException
+	public static void insertCard(Connection connexion,JsonNode card ) throws SQLException, UnsupportedEncodingException
 	{
-		//TODO find a way to find the type of the field and user the position fieldname mapper to automate and never modify
-		
-		String reqParam = "insert into card VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			
+		String reqParam = "insert into card VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		
 		PreparedStatement pstm = connexion.prepareStatement(reqParam);
 		
-		pstm.setInt (1, card.path("id").asInt());
-		pstm.setString(2, card.path("name").asText());
-		pstm.setString(3, card.path("type").asText());
-		pstm.setString(4, card.path("desc").asText());
-		pstm.setInt(5, card.path("atk").asInt());
-		pstm.setInt(6, card.path("def").asInt());
-		pstm.setInt(7, card.path("level").asInt());
-		pstm.setString(8, card.path("race").asText());			
-		pstm.setString(9, card.path("attribute").asText());
-		pstm.setString(10, card.get("card_images").toString());
-		pstm.setInt(11, card.path("linkval").asInt());
 		
-		if (card.path("linkmarkers").isMissingNode() != true)
-		{
-			pstm.setString(12, card.get("linkmarkers").toString());
-		}	
-		else
-		{
-			pstm.setString(12, "");
+		JsonNode cardImages = card.path("card_images");
+        
+		
+	    for (JsonNode node : cardImages) 
+	    {
+	        int id= node.path("id").asInt();
+	        
+	        String img = node.path("image_url").asText();
+	        
+	        String SmallImg = node.path("image_url_small").asText();
+	  
+			pstm.setInt (1, id);
+			pstm.setString(2, card.path("name").asText());
+			pstm.setString(3, card.path("type").asText());
+			
+			Charset utf8 = Charset.forName("UTF-8");
+	        
+			Charset def = Charset.defaultCharset();
+
+	        byte[] bytes = card.path("desc").asText().getBytes("UTF-8");
+	        
+	        String desc = new String(bytes , def.name());
+	        
+			pstm.setNString(4,  desc);
+			pstm.setInt(5, card.path("atk").asInt());
+			pstm.setInt(6, card.path("def").asInt());
+			pstm.setInt(7, card.path("level").asInt());
+			pstm.setString(8, card.path("race").asText());			
+			pstm.setString(9, card.path("attribute").asText());
+			pstm.setString(10, img);
+			pstm.setInt(11, card.path("linkval").asInt());			
+			pstm.setString(12, card.path("linkmarkers").asText());
+			pstm.setInt(13, card.path("scale").asInt());
+			pstm.setString(14, SmallImg);
+		
+			int count = pstm.executeUpdate();	
 		}
-		pstm.setInt(13, card.path("scale").asInt());
-		//pstm.setBoolean(14, isStaple);
-		
-		int count = pstm.executeUpdate();	
 	}
 }

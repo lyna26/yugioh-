@@ -3,3 +3,16 @@ TextArea
     -fx-border-color: black;
     -fx-border-radius: 5;
 }
+
+TextFlow
+{
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+}
+
+
+GridPane
+{
+	-fx-border-color: black;
+    -fx-border-radius: 5;
+}

@@ -14,7 +14,6 @@ public class XYZMonster extends ExtraMonster{
 	 */
 	public XYZMonster(JsonNode card, Player owner) {
 		super(card, owner);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

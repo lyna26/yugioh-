@@ -11,7 +11,7 @@ import enums.Position;
 import javafx.scene.image.Image;
 import player.Player;
 
-public abstract class Card extends javafx.scene.image.ImageView {
+public abstract class Card extends javafx.scene.image.ImageView implements Icard{
 	
 	private int id;
 	private String name;
@@ -19,6 +19,7 @@ public abstract class Card extends javafx.scene.image.ImageView {
 	private String desc;
 	private String race;
 	private String image;
+	private String imageSmall;
 	private Player owner;
 	private Limit limit = Limit.NO_LIMITED;
 	private Face face = Face.UP;
@@ -29,13 +30,13 @@ public abstract class Card extends javafx.scene.image.ImageView {
 	 */
 	public Card(JsonNode card, Player owner)
 	{
-		id =  card.path("id").asInt();
+		id = card.path("id").asInt();
 		name = card.path("name").asText();
 		type = card.path("type").asText();
 		desc = card.path("desc").asText();
 		race = card.path("race").asText();
-		image = card.path("image").asText();
-
+		image = card.path("card_images").get(0).path("image_url").asText();
+		imageSmall = card.path("card_images").get(0).path("image_url_small").asText();		
 		this.owner = owner;
 	}
 	
@@ -52,7 +53,7 @@ public abstract class Card extends javafx.scene.image.ImageView {
 			desc = cardInfos.getString("desc");
 			race = cardInfos.getString("race");
 			image = cardInfos.getString("image");
-			
+			imageSmall = cardInfos.getString("imageSmall");
 			this.owner = owner;
 		} 
 		catch (SQLException e) 
@@ -70,13 +71,15 @@ public abstract class Card extends javafx.scene.image.ImageView {
 	 * @param race card race 
 	 * @param image card images list formatted as csv (;)
 	 */
-	public Card(int id, String name, String type, String desc, String race, String image, Player owner) {
+	public Card(int id, String name, String type, String desc, String race, String image, String imageSmall, Player owner) 
+	{
 		this.id =  id;
 		this.name = name;
 		this.type = type;
 		this.desc = desc;
 		this.race = race;
 		this.image = image;
+		this.imageSmall = imageSmall;
 		this.owner = owner;
 	}
 
@@ -104,10 +107,10 @@ public abstract class Card extends javafx.scene.image.ImageView {
 		return race;
 	}
 	
-	/*public String getImage() {
+	public String getCardImage() {
 		return image;
 	}
-	*/
+	
 	public Limit getLIMIT() {
 		return limit;
 	}
@@ -124,13 +127,11 @@ public abstract class Card extends javafx.scene.image.ImageView {
 		this.owner = owner;
 	}
 	
-	public void setCardImage(Image image){
-        setImage(image);
+	public void setCardImage(){
+        setImage(new Image(image));
 	}
 
-	public void setImage(){
-		String path = "https://images.ygoprodeck.com/images/cards/64591429.jpg";
-		System.out.println(path);
-	    setCardImage(new Image(path));
-	}
+	public String getImageSmall() {
+		return imageSmall;
+	}	
 }

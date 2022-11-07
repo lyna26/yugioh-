@@ -24,23 +24,23 @@ public class ApiEngine {
 	{
 		try
 		{
+			URL url = new URL("https://db.ygoprodeck.com/api/v7/cardinfo.php?name=astral kuriboh");
 
-	        // URL url = new URL("https://db.ygoprodeck.com/api/v7/cardinfo.php?name=astral kuriboh");
+			//URL url = new URL("https://db.ygoprodeck.com/api/v7/cardinfo.php?name=Dark Magician");
+			
+			//URL url = new URL("https://db.ygoprodeck.com/api/v7/cardinfo.php?");
 
-
-	        URL url = new URL("https://db.ygoprodeck.com/api/v7/cardinfo.php?");
-
-	         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-	         conn.setRequestMethod("GET");
-
-	         conn.connect();
-
-
-	         //Check if connect is made
-	         int responseCode = conn.getResponseCode();
-
-	         // 200 OK
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			
+			conn.setRequestMethod("GET");
+			
+			conn.connect();
+			
+			
+			 //Check if connect is made
+			 int responseCode = conn.getResponseCode();
+			
+			 // 200 OK
 	         if (responseCode != 200)
 	         {
 	             throw new RuntimeException("HttpResponseCode: " + responseCode);
@@ -48,8 +48,7 @@ public class ApiEngine {
 	         else
 	         {
 
-	        	BufferedReader br = new BufferedReader(new InputStreamReader(
-	                    url.openStream(), StandardCharsets.UTF_8));
+	        	//BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
 
 
 	        	/*String strCurrentLine;
@@ -59,7 +58,7 @@ public class ApiEngine {
 	        		System.out.println(strCurrentLine);
 	        	}*/
 
-	        	ObjectMapper mapper = new ObjectMapper();
+	        	
 	        	//ObjectMapper mapperT = new ObjectMapper();
 	        	
 	        	//mapperT.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -70,8 +69,10 @@ public class ApiEngine {
 	        	  
 	        	//JsonNode cardData = mapper.readTree(br);
 
+	        	ObjectMapper mapper = new ObjectMapper();
+	        	
 	        	JsonNode cardData = mapper.readTree(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
-
+	        	
 	        	return cardData;
 	         }
 	     }

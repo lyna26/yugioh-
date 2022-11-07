@@ -51,6 +51,22 @@ public abstract class MonsterCard extends Card {
 		}
 	}
 	
+	/**
+	 * @param id
+	 * @param name
+	 * @param type
+	 * @param desc
+	 * @param race
+	 * @param image
+	 * @param imageSmall
+	 * @param owner
+	 */
+	public MonsterCard(int id, String name, String type, String desc, String race, String image, String imageSmall,
+			Player owner) {
+		super(id, name, type, desc, race, image, imageSmall, owner);
+		
+	}
+
 	public int getAtk() {
 		return atk;
 	}
@@ -84,12 +100,6 @@ public abstract class MonsterCard extends Card {
 	}
 	
 	
-	/*public void attackDirectly()
-	{
-		player = this.getOwner().
-		p.looseLp(this.getAtk());
-	}*/
-	
 	public Position getMode() {
 		return mode;
 	}
@@ -102,47 +112,5 @@ public abstract class MonsterCard extends Card {
 	{
 		return monster - opponent;
 		
-	}
-	
-	/**
-	 * This function is for the battle phase, it will calculate damage and reduce LP from the target
-	 * @param monster it is the target monster
-	 */
-	public void attack(MonsterCard monster){
-		
-		if (monster == null)
-		{
-			//TODO think about finding the opponent to direct attack 
-		}
-		else
-		{
-			int damage = 0;
-			
-			//damage calculation
-			if (monster.getMode() == Position.DEF)
-			{
-				damage = calculateDamage(this.getAtk(), monster.getDef());
-			}
-			else
-			{
-				damage = calculateDamage(this.getAtk(),monster.getAtk());
-			}
-			
-			
-			//reduce lp
-			if (damage == 0)
-			{
-				//TODO case opponent must both die bacause same LP
-			}
-			else if (damage < 0)
-			{
-				this.getOwner().looseLp(damage);
-			}
-			else
-			{
-				monster.getOwner().looseLp(damage);
-			}
-			
-		}
 	}
 }

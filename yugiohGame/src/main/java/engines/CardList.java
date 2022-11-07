@@ -1,7 +1,7 @@
 package engines;
 
 import card.Card;
-import card.ICard;
+
 import card.RitualMonster;
 
 public class CardList {

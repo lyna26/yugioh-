@@ -26,4 +26,21 @@ public class MainMonster extends MonsterCard{
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * @param id
+	 * @param name
+	 * @param type
+	 * @param desc
+	 * @param race
+	 * @param image
+	 * @param imageSmall
+	 * @param owner
+	 */
+	public MainMonster(int id, String name, String type, String desc, String race, String image, String imageSmall,
+			Player owner) {
+		super(id, name, type, desc, race, image, imageSmall, owner);
+		// TODO Auto-generated constructor stub
+	}
+
+	
 }

@@ -8,14 +8,12 @@ import player.Player;
 
 public class FusionMonster extends ExtraMonster
 {
-
 	/**
 	 * @param card
 	 * @param owner
 	 */
 	public FusionMonster(JsonNode card, Player owner) {
 		super(card, owner);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -24,7 +22,6 @@ public class FusionMonster extends ExtraMonster
 	 */
 	public FusionMonster(ResultSet cardInfos, Player owner) {
 		super(cardInfos, owner);
-		// TODO Auto-generated constructor stub
 	}
 
 }
